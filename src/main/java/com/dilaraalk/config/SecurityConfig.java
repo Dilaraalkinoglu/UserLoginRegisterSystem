@@ -38,7 +38,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Auth endpoint'lerini aç
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -52,11 +52,15 @@ public class SecurityConfig {
         return http.build();
     }
     
+    
+    //login işlemi sırasında kullanılıyor
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
     	return config.getAuthenticationManager();
     }
     
+    
+    //kullanıcı dogrulama işlemleri için kullanılıyor
     @Bean
 	public AuthenticationProvider authenticationProvider(
 	        UserDetailsService userDetailsService,

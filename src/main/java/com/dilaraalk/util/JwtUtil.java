@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import ch.qos.logback.core.subst.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -24,7 +25,7 @@ public class JwtUtil {
     @Value("${jwt.expiration:86400000}") // 24 saat (milisaniye)
     private Long expiration;
     
-    // JWT Token üretme
+    // token üretme
     public String generateToken(String username, List<String> roles) {
         return Jwts.builder()
                 .subject(username)
@@ -35,12 +36,12 @@ public class JwtUtil {
                 .compact();
     }
     
-    // Token'dan username alma
+    // Token çözümleme 
+    
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
     
-    // Token'dan roller alma
     @SuppressWarnings("unchecked")
     public List<String> getRolesFromToken(String token) {
         return getClaimFromToken(token, claims -> claims.get("roles", List.class));
@@ -56,13 +57,12 @@ public class JwtUtil {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
-    
-    // Token'dan tüm claims alma
+
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .verifyWith(getSignInKey())
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims(token) //tokenin değiştirilip değiştirilmediğini sorguluyor
                 .getPayload();
     }
     

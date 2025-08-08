@@ -32,6 +32,7 @@ public class AuthServiceImpl implements IAuthService{
 		
 		User user = new User();
 		user.setUserName(request.getUserName());
+		//parolayı BCrypt ile encode ediyoruz
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setRoles(List.of("ROLE_USER"));
 		

@@ -22,12 +22,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Veritabanından kullanıcıyı bul
+  
         return userRepository.findByUserName(username)
                 .map(user -> new User(
-                        user.getUserName(), // username
-                        user.getPassword(), // şifre (hashed)
-                        user.getRoles().stream() // roller → SimpleGrantedAuthority'e çevir
+                        user.getUserName(),
+                        user.getPassword(), 
+                        user.getRoles().stream()
                                 .map(SimpleGrantedAuthority::new)
                                 .collect(Collectors.toList())
                 ))

@@ -2,6 +2,8 @@ package com.dilaraalk.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -15,7 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users") // 'user' PostgreSQL'de reserved keyword olabilir
+@Table(name = "users") 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,10 +31,10 @@ public class User {
     @Column(name = "user_name", unique = true, nullable = false)
     private String userName;
     
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
     
     @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "role") 
     private List<String> roles;
 }
